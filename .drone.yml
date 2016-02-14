@@ -1,0 +1,33 @@
+matrix:
+  ARCH:
+    - armhf
+  VERSION:
+    # - "0.5.2"
+    - "0.6.3"
+    # - "master"
+
+publish:
+  hub_consul_0_6_3:
+    # image: armhfplugins/drone-docker:docker-caching
+    image: armhfplugins/drone-docker
+    file: "$$VERSION/$$ARCH/Dockerfile"
+    context: "$$VERSION/$$ARCH"
+    username: $$DOCKER_USER
+    email: $$DOCKER_EMAIL
+    password: $$DOCKER_PASSWORD
+    repo: armhfbuild/consul
+    force_tag: true
+    storage_driver: overlay
+    tag:
+      - "$$VERSION"
+      - "0.6"
+      - "latest"
+    when:
+      matrix:
+        ARCH: armhf
+        VERSION: "0.6.3"
+
+notify:
+  slack:
+    webhook_url: $$SLACK_WEBHOOK_URL
+    channel: armhf
